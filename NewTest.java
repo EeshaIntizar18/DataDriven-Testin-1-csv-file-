@@ -30,16 +30,17 @@ public class NewTest {
 
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) throws Exception {
+
 		// Setting property for Chrome Driver
 		System.setProperty("webdriver.chrome.driver", "/home/rlt/Downloads/chromedriver");
 
 		// Instance of ChromeOption
-		ChromeOptions options = new ChromeOptions();
-		String line = "";
-		String splitBy = ",";
-
+		ChromeOptions options1 = new ChromeOptions();
+		driver = new ChromeDriver(options1);
 		try {
-			// parsing a CSV file into BufferedReader class constructor
+			String line = "";
+			String splitBy = ",";
+
 			BufferedReader br = new BufferedReader(
 					new FileReader("/home/rlt/eclipse-workspace/Website/Web/Data/Untitled 1.csv"));
 			while ((line = br.readLine()) != null)
@@ -47,41 +48,29 @@ public class NewTest {
 			{
 				// use comma as separator
 				String[] spliting = line.split(splitBy);
-				// Disable notification PopUp
-				options.addArguments("--disable-notifications");
-//			options.addArguments("chrome.switches", "--disable-extensions");
-//			options.addArguments("--user-data-dir=/home/rlt/.config/google-chrome/");
-//			// load default profile
+
+//				options1.addArguments("--user-data-dir=/home/rlt/.config/google-chrome/");
+//				// load default profile
 //
-//			options.addArguments("--profile-directory="+spliting[0]);
-//			Thread.sleep(1000);
-				System.out.println(spliting[0])
-				// Instance of ChromeDriver
-				;
-				driver = new ChromeDriver(options);
+//				options1.addArguments("--profile-directory=" + spliting[0]);
+				System.out.println(spliting[0]);
+
 				// Calling Google Page
-				driver.get("https://www.google.com/?gl=us&hl=en&pws=0&gws_rd=cr");
-				Thread.sleep(1000);
-				driver.manage().deleteAllCookies();
+				System.out.println(spliting[4]);
+				driver.get( spliting[4]);
 
 				// Maximize the browser
 				driver.manage().window().maximize();
 				Thread.sleep(4500);
 
-                ////////////////////print ///////////////////////////
-
-				System.out.println(spliting[1]);
-				System.out.println(spliting[2]);
-				System.out.println(spliting[3]);
-				System.out.println(spliting[4]);
-				
-				////Enter keywords//////////////
+				//// Enter keywords//////////////
 				driver.findElement(By.xpath("/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input"))
 						.sendKeys(spliting[1]);
-				Thread.sleep(8000);
+				Thread.sleep(3000);
 				///////////////// Enter search////////////
 				WebElement ar = driver.findElement(By.name("q"));
 				ar.sendKeys(Keys.RETURN);
+				Thread.sleep(20000);
 				System.out.println("   ");
 
 				boolean flag = false;
@@ -94,12 +83,12 @@ public class NewTest {
 						String link = eachResult.getAttribute("href");
 						if (null == link)
 							link = eachResult.getAttribute("src");
+
 						if (link.contains(spliting[2])) {
 
 							eachResult.findElement(By.xpath("//a[@href='" + link + "']")).click();
 							System.out.println("Link found");
 							flag = true;
-
 							break;
 						}
 					} // End of foreach-loop
@@ -112,12 +101,13 @@ public class NewTest {
 					}
 
 				}
-				flag = false; // while
+
 				String wait1 = spliting[3];
 				int i = Integer.parseInt(wait1);
 				driver.manage().timeouts().implicitlyWait(i, TimeUnit.SECONDS);
-				String url = spliting[2];
-				driver.get(url);
+				System.out.println(i);
+//			
+
 
 			}
 
